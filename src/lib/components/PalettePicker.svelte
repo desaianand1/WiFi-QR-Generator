@@ -36,7 +36,7 @@
 		<DropdownMenu.Label>Color Palette</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<DropdownMenu.RadioGroup bind:value={selectedValue}>
-			{#each palettes as palette}
+			{#each palettes as palette, index (index)}
 				<DropdownMenu.RadioItem value={palette.id} class="cursor-pointer">
 					<div class="flex w-full items-center justify-between gap-3">
 						<div class="min-w-0 flex-1">

@@ -7,6 +7,7 @@
 	import { createQRCode } from '$lib/utils/qrcode';
 	import { colorizeText } from '$lib/utils/text-formatting';
 	import type QRCodeStyling from 'qr-code-styling';
+	import { qrSettingsStore } from '$lib/stores/qr-settings.svelte';
 
 	interface Props {
 		config: WifiConfig;
@@ -18,29 +19,27 @@
 	let qrContainer: HTMLDivElement;
 	let qrCode: QRCodeStyling | null = null;
 
-	// Generate QR code
+	// Generate QR code - reactively updates when settings change
 	$effect(() => {
 		if (!qrContainer) return;
 
+		// Get reactive settings from store
+		const qrSettings = qrSettingsStore.value;
 		const qrString = generateWifiQRString(config);
 
-		if (qrCode) {
-			qrCode.update({
-				data: qrString,
-				image: imageData
-			});
-		} else {
-			qrCode = createQRCode({
-				data: qrString,
-				centerImage: imageData,
-				size: 400,
-				errorCorrectionLevel: imageData ? 'H' : 'M'
-			});
+		// Always recreate QR code to ensure all settings (including colors) are applied
+		// The QRCodeStyling.update() method doesn't support updating style properties
+		qrCode = createQRCode({
+			data: qrString,
+			centerImage: imageData,
+			size: 400,
+			customSettings: qrSettings
+		});
 
-			// eslint-disable-next-line svelte/no-dom-manipulating
-			qrContainer.innerHTML = '';
-			qrCode.append(qrContainer);
-		}
+		// Clear container and append new QR code
+		// eslint-disable-next-line svelte/no-dom-manipulating
+		qrContainer.innerHTML = '';
+		qrCode.append(qrContainer);
 	});
 </script>
 
@@ -69,7 +68,7 @@
 				<!-- SSID -->
 				<Item.Root variant="muted" class="bg-gray-100! text-gray-900!">
 					<Item.Media variant="icon" class="bg-gray-200">
-						<WifiIcon class="h-5 w-5 text-gray-700!" />
+						<WifiIcon class="h-5 w-5 text-gray-500!" />
 					</Item.Media>
 					<Item.Content>
 						<Item.Description class="text-xs text-gray-500!">Network Name (SSID)</Item.Description>
@@ -86,7 +85,7 @@
 				{#if config.securityType !== 'nopass' && config.password}
 					<Item.Root variant="muted" class="bg-gray-100! text-gray-900!">
 						<Item.Media variant="icon" class="bg-gray-200">
-							<LockIcon class="h-5 w-5 text-gray-700!" />
+							<LockIcon class="h-5 w-5 text-gray-500!" />
 						</Item.Media>
 						<Item.Content>
 							<Item.Description class="text-xs text-gray-500!">Password</Item.Description>

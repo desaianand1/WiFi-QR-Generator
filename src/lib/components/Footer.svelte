@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Separator } from '$lib/components/ui/separator';
 	import { CoffeeIcon } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 

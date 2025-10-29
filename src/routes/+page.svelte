@@ -3,7 +3,7 @@
 	import QRPreview from '$lib/components/QRPreview.svelte';
 	import PrintableSheet from '$lib/components/PrintableSheet.svelte';
 	import * as Alert from '$lib/components/ui/alert';
-	import { Toaster, toast } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { ShieldCheckIcon } from 'lucide-svelte';
 	import type { WifiConfig } from '$lib/utils/wifi';
 	import { validateWifiConfig } from '$lib/utils/wifi';
@@ -63,11 +63,9 @@
 </script>
 
 <svelte:head>
-	<title>WiFi QR Code Generator</title>
+	<title>WiFi QR Generator</title>
 	<meta name="description" content="Generate printable WiFi QR codes for easy network sharing" />
 </svelte:head>
-
-<Toaster richColors position="top-center" />
 
 <!-- Main Content -->
 <div class="container mx-auto px-4 py-8 print:hidden">
@@ -96,7 +94,7 @@
 		<Alert.Title class="mb-3 flex flex-1 items-center justify-start gap-1.5">
 			<ShieldCheckIcon class="size-6 text-blue-700 dark:text-blue-500" />
 
-			<span class="text-xl">Your privacy is protected.</span></Alert.Title
+			<span class="text-xl">Your privacy is respected.</span></Alert.Title
 		>
 
 		<Alert.Description class="text-blue-700/75 dark:text-blue-500/75">

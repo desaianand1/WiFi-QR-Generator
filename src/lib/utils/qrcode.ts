@@ -1,4 +1,5 @@
 import QRCodeStyling, { type Options as QRCodeOptions } from 'qr-code-styling';
+import type { QRCustomSettings } from '$lib/stores/qr-settings.svelte';
 
 /**
  * QR code generation options
@@ -8,6 +9,7 @@ export interface QRGenerationOptions {
 	centerImage?: string;
 	size?: number;
 	errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H';
+	customSettings?: QRCustomSettings;
 }
 
 /**
@@ -16,33 +18,48 @@ export interface QRGenerationOptions {
  * @returns QRCodeStyling instance
  */
 export function createQRCode(options: QRGenerationOptions): QRCodeStyling {
-	const { data, centerImage, size = 512, errorCorrectionLevel = 'H' } = options;
+	const { data, centerImage, size = 512, errorCorrectionLevel = 'H', customSettings } = options;
+
+	// Use custom settings if provided, otherwise use defaults
+	const dotsColor = customSettings?.dotsColor ?? '#000000';
+	const dotsType = customSettings?.dotsType ?? 'rounded';
+	const cornersSquareColor = customSettings?.cornersSquareColor ?? '#000000';
+	const cornersSquareType = customSettings?.cornersSquareType ?? 'extra-rounded';
+	const cornersDotColor = customSettings?.cornersDotColor ?? '#000000';
+	const cornersDotType = customSettings?.cornersDotType ?? 'dot';
+	const backgroundColor = customSettings?.backgroundColor ?? '#ffffff';
+	const qrSize = customSettings?.size ?? size;
+	const qrMargin = customSettings?.margin ?? 10;
+	const qrErrorCorrectionLevel = customSettings?.errorCorrectionLevel ?? errorCorrectionLevel;
+	const imageSize = customSettings?.imageSize ?? 0.3;
+	const imageMargin = customSettings?.imageMargin ?? 2;
+	const hideBackgroundDots = customSettings?.hideBackgroundDots ?? true;
 
 	const qrOptions: QRCodeOptions = {
-		width: size,
-		height: size,
+		width: qrSize,
+		height: qrSize,
 		type: 'svg',
 		data,
-		margin: 10,
+		margin: qrMargin,
 		qrOptions: {
 			typeNumber: 0,
 			mode: 'Byte',
-			errorCorrectionLevel
+			errorCorrectionLevel: qrErrorCorrectionLevel
 		},
 		dotsOptions: {
-			color: '#000000',
-			type: 'rounded'
+			color: dotsColor,
+			type: dotsType
 		},
 		backgroundOptions: {
-			color: '#ffffff'
+			color: backgroundColor
 		},
 		cornersSquareOptions: {
-			color: '#000000',
-			type: 'extra-rounded'
+			color: cornersSquareColor,
+			type: cornersSquareType
 		},
 		cornersDotOptions: {
-			color: '#000000',
-			type: 'dot'
+			color: cornersDotColor,
+			type: cornersDotType
 		}
 	};
 
@@ -50,9 +67,9 @@ export function createQRCode(options: QRGenerationOptions): QRCodeStyling {
 	if (centerImage) {
 		qrOptions.image = centerImage;
 		qrOptions.imageOptions = {
-			hideBackgroundDots: true,
-			imageSize: 1,
-			margin: 2,
+			hideBackgroundDots,
+			imageSize,
+			margin: imageMargin,
 			crossOrigin: 'anonymous',
 			saveAsBlob: true
 		};

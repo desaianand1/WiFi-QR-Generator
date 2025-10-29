@@ -9,7 +9,6 @@
 		PrinterIcon,
 		WifiIcon,
 		LockIcon,
-		CogIcon,
 		SettingsIcon
 	} from 'lucide-svelte';
 	import type { WifiConfig } from '$lib/utils/wifi';
@@ -18,6 +17,8 @@
 	import { colorizeText } from '$lib/utils/text-formatting';
 	import type QRCodeStyling from 'qr-code-styling';
 	import { cn } from '$lib/utils';
+	import QRSettingsPopover from './QRSettingsPopover.svelte';
+	import { qrSettingsStore } from '$lib/stores/qr-settings.svelte';
 
 	interface Props {
 		config: WifiConfig;
@@ -31,33 +32,29 @@
 
 	let qrContainer: HTMLDivElement | undefined = $state();
 	let qrCode: QRCodeStyling | null = null;
+	let settingsOpen = $state(false);
 
-	// Generate and update QR code
+	// Generate and update QR code - reactively updates when settings change
 	$effect(() => {
 		if (!qrContainer || !qrGenerated) return;
 
-		// Generate WiFi QR string
+		// Get reactive settings from store
+		const qrSettings = qrSettingsStore.value;
 		const qrString = generateWifiQRString(config);
 
-		// Create or update QR code
-		if (qrCode) {
-			qrCode.update({
-				data: qrString,
-				image: imageData
-			});
-		} else {
-			qrCode = createQRCode({
-				data: qrString,
-				centerImage: imageData,
-				size: 360,
-				errorCorrectionLevel: imageData ? 'H' : 'M'
-			});
+		// Always recreate QR code to ensure all settings (including colors) are applied
+		// The QRCodeStyling.update() method doesn't support updating style properties
+		qrCode = createQRCode({
+			data: qrString,
+			centerImage: imageData,
+			size: 360,
+			customSettings: qrSettings
+		});
 
-			// Clear container and append QR code
-			// eslint-disable-next-line svelte/no-dom-manipulating
-			qrContainer.innerHTML = '';
-			qrCode.append(qrContainer);
-		}
+		// Clear container and append new QR code
+		// eslint-disable-next-line svelte/no-dom-manipulating
+		qrContainer.innerHTML = '';
+		qrCode.append(qrContainer);
 	});
 </script>
 
@@ -72,9 +69,14 @@
 			<Card.Title>QR Preview</Card.Title>
 			<Card.Description>Print & scan this to connect to your WiFi network.</Card.Description>
 			<Card.Action>
-				<Button variant="ghost" size="icon-lg" class="rounded-full"
-					><SettingsIcon class="size-5" /></Button
-				>
+				<QRSettingsPopover bind:open={settingsOpen} hasImage={!!imageData}>
+					<!-- eslint-disable-next-line svelte/no-useless-children-snippet -->
+					{#snippet children()}
+						<Button variant="ghost" size="icon-lg" class="rounded-full">
+							<SettingsIcon class="size-5" />
+						</Button>
+					{/snippet}
+				</QRSettingsPopover>
 			</Card.Action>
 		</Card.Header>
 	{/if}

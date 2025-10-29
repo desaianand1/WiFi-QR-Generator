@@ -1,6 +1,6 @@
 import { defaultPalette, type Palette } from '$lib/utils/palettes';
 
-const PALETTE_STORAGE_KEY = 'color-palette';
+const PALETTE_STORAGE_KEY = 'wifi-qr-generator-color-palette';
 
 class PaletteStore {
 	private current = $state<Palette>(defaultPalette);
