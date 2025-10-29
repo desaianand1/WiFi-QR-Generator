@@ -162,14 +162,14 @@ class QRSettingsStore {
 		}
 	}
 
-	applyPrimaryColor() {
+	applyPrimaryColor = () => {
 		const primaryColor = getPrimaryColor();
 		this.update({
 			dotsColor: primaryColor,
 			cornersSquareColor: primaryColor,
 			cornersDotColor: primaryColor
 		});
-	}
+	};
 
 	private persist() {
 		if (typeof window !== 'undefined') {
