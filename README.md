@@ -1,38 +1,35 @@
-# sv
+# WiFi QR Generator
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+> **Share your WiFi instantly with a scannable QR code**
 
-## Creating a project
+![Svelte](https://img.shields.io/badge/Svelte-FF3E00?style=flat&logo=svelte&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 
-If you're seeing this, you've probably already done this step. Congrats!
+**[🚀 Use the App](https://wifi.ananddesai.dev)**
 
-```sh
-# create a new project in the current directory
-npx sv create
+---
 
-# create a new project in my-app
-npx sv create my-app
-```
+## What is this?
 
-## Developing
+A simple web tool that creates printable QR codes for your WiFi network. Instead of manually typing long passwords, your guests can scan the QR code and connect instantly.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## How to use
 
-```sh
-npm run dev
+1. **Visit** [wifi.ananddesai.dev](https://wifi.ananddesai.dev)
+2. **Enter** your WiFi network name and password
+3. **Customize** the QR code colors and design (optional)
+4. **Generate** and download or print your QR code
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+That's it! Display the QR code in your home or office for easy WiFi sharing.
 
-## Building
+## Features
 
-To create a production version of your app:
+- **100% Private** - All QR codes are generated in your browser. Your WiFi password never leaves your device.
+- **Customizable** - Choose colors, add logos, and style your QR code
+- **Print-ready** - Includes a formatted printable sheet
+- **Works Offline** - Save the page and use it anywhere, no internet required
 
-```sh
-npm run build
-```
+## Privacy & Security
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Your WiFi credentials are processed entirely in your browser. Nothing is stored on servers or transmitted over the internet. You can even use this tool offline for complete peace of mind.
